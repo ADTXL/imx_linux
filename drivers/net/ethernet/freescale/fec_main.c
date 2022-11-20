@@ -3353,6 +3353,8 @@ static void fec_reset_phy(struct platform_device *pdev)
 	}
 	msleep(msec);
 	gpio_set_value(phy_reset, 1);
+
+	msleep(200);  /* SR8201F */
 }
 #else /* CONFIG_OF */
 static void fec_reset_phy(struct platform_device *pdev)
@@ -3449,18 +3451,17 @@ fec_probe(struct platform_device *pdev)
 	int num_tx_qs;
 	int num_rx_qs;
 
-   	/* zuozhongkai 2019/2/20 设置MX6UL_PAD_ENET1_TX_CLK和
-     * MX6UL_PAD_ENET2_TX_CLK这两个IO的复用寄存器的SION位
-     * 为1。
-     */
-    void __iomem *IMX6U_ENET1_TX_CLK;
-    void __iomem *IMX6U_ENET2_TX_CLK;
+	/* 设置 MX6UL_PAD_ENET1_TX_CLK 和 MX6UL_PAD_ENET2_TX_CLK
+ 	* 这两个 IO 的复用寄存器的 SION 位为 1。
+ 	*/
+ 	void __iomem *IMX6U_ENET1_TX_CLK;
+ 	void __iomem *IMX6U_ENET2_TX_CLK;
 
-    IMX6U_ENET1_TX_CLK = ioremap(0X020E00DC, 4);
-    writel(0X14, IMX6U_ENET1_TX_CLK);
- 
-    IMX6U_ENET2_TX_CLK = ioremap(0X020E00FC, 4);
-    writel(0X14, IMX6U_ENET2_TX_CLK);
+	IMX6U_ENET1_TX_CLK = ioremap(0X020E00DC, 4);
+ 	writel(0X14, IMX6U_ENET1_TX_CLK);
+
+ 	IMX6U_ENET2_TX_CLK = ioremap(0X020E00FC, 4);
+ 	writel(0X14, IMX6U_ENET2_TX_CLK);
 
 	fec_enet_get_queue_num(pdev, &num_tx_qs, &num_rx_qs);
 

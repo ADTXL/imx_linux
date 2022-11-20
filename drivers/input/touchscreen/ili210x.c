@@ -98,9 +98,9 @@ static void ili210x_report_events(struct input_dev *input,
 			input_report_abs(input, ABS_MT_POSITION_Y, y);
 		}
 	}
-
 	input_mt_report_pointer_emulation(input, false);
 	input_sync(input);
+
 }
 
 static bool get_pendown_state(const struct ili210x *priv)

@@ -285,4 +285,5 @@ source "drivers/net/wireless/mwifiex/Kconfig"
 source "drivers/net/wireless/cw1200/Kconfig"
 source "drivers/net/wireless/rsi/Kconfig"
 source "drivers/net/wireless/realtek/Kconfig"
+
 endif # WLAN

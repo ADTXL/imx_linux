@@ -36,7 +36,7 @@
  *	must support I2C_FUNC_10BIT_ADDR.
  * @flags: I2C_M_RD is handled by all adapters.  No other flags may be
  *	provided unless the adapter exported the relevant I2C_FUNC_*
- *	flags through i2c_check_functionality().
+ *	flags through i2c_clientheck_functionality().
  * @len: Number of data bytes in @buf being read from or written to the
  *	I2C slave address.  For read transactions where I2C_M_RECV_LEN
  *	is set, the caller guarantees that this buffer can hold up to

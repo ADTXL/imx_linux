@@ -365,7 +365,6 @@ static int mxsfb_get_of_property(void)
 	struct device_node *np = sii902x.client->dev.of_node;
 	const char *mode_str;
 	int bits_per_pixel, ret;
-	int irq_pin;
 
 	ret = of_property_read_string(np, "mode_str", &mode_str);
 	if (ret < 0) {
@@ -380,13 +379,6 @@ static int mxsfb_get_of_property(void)
 
 	sii902x.mode_str = mode_str;
 	sii902x.bits_per_pixel = bits_per_pixel;
-
-       /* input mode => enabled hdmi detect
-	* output mode => disabled hdmi detect
-	* Default output mode in alpha or mini board
-	*/
-	irq_pin = of_get_named_gpio(np, "irq-gpios", 0);
-	gpio_direction_output(irq_pin, 1);
 
 	return ret;
 }
@@ -485,39 +477,30 @@ static int sii902x_remove(struct i2c_client *client)
 	return 0;
 }
 
-#if 0
 static void sii902x_poweron(void)
 {
+	#if 0
 	/* Turn on DVI or HDMI */
-	/* if (sii902x.edid_cfg.hdmi_cap)
+	if (sii902x.edid_cfg.hdmi_cap)
 		i2c_smbus_write_byte_data(sii902x.client, 0x1A, 0x01);
-	else */
+	else
 		i2c_smbus_write_byte_data(sii902x.client, 0x1A, 0x00);
+	#endif
+
+	i2c_smbus_write_byte_data(sii902x.client, 0x1A, 0x00);
 	return;
 }
 
 static void sii902x_poweroff(void)
 {
+	#if 0
 	/* disable tmds before changing resolution */
 	if (sii902x.edid_cfg.hdmi_cap)
 		i2c_smbus_write_byte_data(sii902x.client, 0x1A, 0x11);
 	else
 		i2c_smbus_write_byte_data(sii902x.client, 0x1A, 0x10);
+	#endif
 
-	return;
-}
-#endif
-
-static void sii902x_poweron(void)
-{
-	/* Turn on DVI or HDMI */
-		i2c_smbus_write_byte_data(sii902x.client, 0x1A, 0x00);
-	return;
-}
-
-static void sii902x_poweroff(void)
-{
-	/* disable tmds before changing resolution */
 	i2c_smbus_write_byte_data(sii902x.client, 0x1A, 0x10);
 	return;
 }
