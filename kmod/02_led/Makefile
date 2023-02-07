@@ -1,5 +1,4 @@
-KERNEL_DIR := /home/user/txl/project/zdyz/imx_linux
-
+KERNEL_DIR := $(shell cd ../..;pwd)
 CURRENT_PATH := $(shell pwd)
 
 obj-m := led.o
