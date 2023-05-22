@@ -111,8 +111,8 @@ void timer_function(unsigned long arg)
         atomic_set(&dev->releasekey, 1);    // 标记松开按键
     }
     
-    /* 定时器中断处理汉书执行，表示有按键按下  */
-    // 唤醒进程
+    /* 定时器中断处理函数执行，表示有按键按下  */
+    // 当releasekey为1，说明按键已松开，完成了一次完整的按键，唤醒进程
     if (atomic_read(&dev->releasekey)) {
         /* wake_up(&dev->r_wait)  */
         wake_up_interruptible(&dev->r_wait);
@@ -217,7 +217,8 @@ static ssize_t imx6uirq_read(struct file *filp, char __user *buf, size_t cnt, lo
     struct imx6uirq_dev *dev = (struct imx6uirq_dev *)filp->private_data;
 
 #if 0
-    // 加入等待队列，等待被唤醒，也就是有按键按下
+    // 采用等待时间来处理read阻塞访问
+    // 加入等待队列，等待被唤醒，也就是有按键按下,releasekey为1
     // 如果没有按键按下的话进程就会进入休眠状态，因为采用了wait_event_interruptible函数
     // 因此进入休眠态的进程可以被信号打断
     // 满足条件返回0
